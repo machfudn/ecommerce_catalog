@@ -3,7 +3,9 @@ const db = require("../config/db");
 // GET semua kategori
 exports.getAllCategories = async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM categories ORDER BY id DESC");
+    const [rows] = await db.query(
+      "SELECT id, nama FROM categories ORDER BY id DESC"
+    );
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -15,9 +17,10 @@ exports.getAllCategories = async (req, res) => {
 exports.getCategoryById = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.query("SELECT * FROM categories WHERE id = ?", [
-      id,
-    ]);
+    const [rows] = await db.query(
+      "SELECT id, nama FROM categories WHERE id = ? LIMIT 1",
+      [id]
+    );
 
     if (rows.length === 0) {
       return res.status(404).json({ message: "Kategori tidak ditemukan" });
@@ -48,6 +51,11 @@ exports.createCategory = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    if (err.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({
+        message: "Kategori dengan nama tersebut sudah ada",
+      });
+    }
     res.status(500).json({ message: "Gagal menambahkan kategori" });
   }
 };
@@ -63,6 +71,9 @@ exports.updateCategory = async (req, res) => {
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Kategori tidak ditemukan" });
+    }
+    if (!nama || !nama.trim()) {
+      return res.status(400).json({ message: "Nama kategori wajib diisi" });
     }
 
     res.json({ message: "Kategori berhasil diperbarui" });

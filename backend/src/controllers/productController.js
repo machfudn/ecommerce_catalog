@@ -6,9 +6,23 @@ const deleteCloudinaryFile = require("../utils/cloudinaryDelete");
 exports.getAllProduk = async (req, res) => {
   try {
     // Mengambil semua kolom sesuai struktur tabel baru
-    const [rows] = await db.query(
-      `SELECT * FROM products ORDER BY created_at DESC`
-    );
+    const [rows] = await db.query(`
+      SELECT
+      p.id,
+      p.sku,
+      p.nama,
+      p.harga,
+      p.berat,
+      p.deskripsi,
+      p.stok,
+      p.image_url,
+      p.status_tampil,
+      p.created_at,
+      c.nama AS nama_kategori
+      FROM products p
+      LEFT JOIN categories c ON p.id_kategori = c.id
+      ORDER BY p.created_at DESC
+    `);
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -24,11 +38,12 @@ exports.getProdukById = async (req, res) => {
     const [rows] = await db.query(
       `
       SELECT 
-        p.*,
-        c.nama AS nama_kategori
+      p.*,
+      c.nama AS nama_kategori
       FROM products p
       LEFT JOIN categories c ON p.id_kategori = c.id
       WHERE p.id = ?
+      LIMIT 1
       `,
       [id]
     );
