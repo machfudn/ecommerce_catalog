@@ -4,11 +4,11 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BiErrorCircle, BiArrowBack } from "react-icons/bi";
 import api from "../utils/Api";
 import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 
 function ProdukDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [produk, setProduk] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,12 +29,7 @@ function ProdukDetail() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <AiOutlineLoading3Quarters className="animate-spin text-4xl text-blue-600 mb-2" />
-        <p className="text-gray-500">Memuat detail produk...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

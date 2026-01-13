@@ -7,12 +7,14 @@ import ActionButton from "../components/ActionButton";
 import api from "../utils/Api";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import Loading from "../components/Loading";
 
 const Kategori = () => {
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nama, setNama] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -21,10 +23,13 @@ const Kategori = () => {
   // Ambil Data
   const loadData = async () => {
     try {
+      setLoading(true);
       const res = await api.get("/category");
       setCategories(res.data);
     } catch (err) {
       toast.error("Gagal mengambil Kategori");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,6 +109,9 @@ const Kategori = () => {
     setNama("");
     setSelectedId(null);
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 lg:ml-64">

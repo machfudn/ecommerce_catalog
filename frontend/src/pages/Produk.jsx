@@ -11,15 +11,14 @@ import api from "../utils/Api";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import Loading from "../components/Loading";
 
 const Produk = () => {
   const [categories, setCategories] = useState([]);
-
   const [products, setProducts] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-
   const [formData, setFormData] = useState({
     sku: "",
     nama: "",
@@ -34,6 +33,7 @@ const Produk = () => {
     status_tampil: "",
   });
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadProducts();
@@ -50,10 +50,13 @@ const Produk = () => {
   };
   const loadProducts = async () => {
     try {
+      setLoading(true);
       const res = await api.get("/product");
       setProducts(res.data);
     } catch (err) {
       toast.error("Gagal memuat produk:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -161,6 +164,9 @@ const Produk = () => {
       });
     }
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 lg:ml-64">

@@ -27,7 +27,6 @@ export default function Login() {
       navigate("/");
     } catch (error) {
       const message = "Login gagal, cek email dan password";
-
       toast.error(message, { id: toastId });
     } finally {
       setLoading(false);

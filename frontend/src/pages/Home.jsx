@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BiErrorCircle } from "react-icons/bi";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdScale, MdStraighten } from "react-icons/md";
 import { GiFishEggs } from "react-icons/gi";
 import Sidebar from "../components/Sidebar";
 import api from "../utils/Api";
 import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -31,12 +30,7 @@ const Home = () => {
 
   /* LOADING */
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[70vh]">
-        <AiOutlineLoading3Quarters className="animate-spin text-blue-600 text-4xl mb-2" />
-        <p className="text-gray-500 text-sm">Loading Katalog...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

@@ -9,13 +9,14 @@ import { getToken } from "../utils/Auth";
 import api from "../utils/Api";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import Loading from "../components/Loading";
 
 const Users = () => {
   const token = getToken();
   const [users, setUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -29,12 +30,15 @@ const Users = () => {
   /* ================= LOAD DATA ================= */
   const loadData = async () => {
     try {
+      setLoading(true);
       const res = await api.get("/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
     } catch (err) {
       toast.error("Gagal mengambil data users:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -140,6 +144,9 @@ const Users = () => {
       password: "",
     });
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 lg:ml-64">
