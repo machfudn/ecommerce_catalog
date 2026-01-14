@@ -5,7 +5,6 @@ const deleteCloudinaryFile = require("../utils/cloudinaryDelete");
 // GET all produk
 exports.getAllProduk = async (req, res) => {
   try {
-    // Mengambil semua kolom sesuai struktur tabel baru
     const [rows] = await db.query(`
       SELECT
       p.id,
@@ -15,6 +14,7 @@ exports.getAllProduk = async (req, res) => {
       p.berat,
       p.deskripsi,
       p.stok,
+      p.ukuran,
       p.image_url,
       p.status_tampil,
       p.created_at,
