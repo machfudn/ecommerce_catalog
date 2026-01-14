@@ -52,7 +52,7 @@ const Sidebar = () => {
         <div>
           <div className="flex items-center justify-between px-2 mb-10 mt-4">
             <span className="text-xl font-bold">
-              AQUA<span className="text-blue-500">STORE</span>
+              Ecommerce<span className="text-blue-500">Catalog</span>
             </span>
 
             <button
