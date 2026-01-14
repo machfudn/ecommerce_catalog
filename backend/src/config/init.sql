@@ -1,4 +1,3 @@
--- 1. Buat Database (Opsional jika belum ada)
 CREATE DATABASE db_ecommerce_catalog;
 USE db_ecommerce_catalog;
 
